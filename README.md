@@ -22,7 +22,7 @@ You will want to open the Web API project and replace any instance of
 
 To run the Web API, assuming that you are using Visual Studio 2019, please open the solution file "Marketplace.sln" and be sure that Marketplace.API is set as the start-up project. And then run the application using IIS Express (Debug with Any CPU selected should be fine).
 **Please note that the Web API runs out of port 44356 on localhost.** 
-![](IISExpress Button.png)
+![](IISExpressButton.png)
 
 To run the Web Client, please open command-line and navigate to the folder "Marketplace.Web". From there, run the command 
 > npm install
