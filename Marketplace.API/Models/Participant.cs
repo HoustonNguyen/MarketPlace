@@ -13,7 +13,6 @@ namespace Marketplace.API.Models
     {
         public Participant()
         {
-            TitleParticipants = new HashSet<TitleParticipant>();
         }
 
         [Key]
@@ -22,8 +21,5 @@ namespace Marketplace.API.Models
         public string Name { get; set; }
         [StringLength(100)]
         public string ParticipantType { get; set; }
-
-        [InverseProperty(nameof(TitleParticipant.Participant))]
-        public virtual ICollection<TitleParticipant> TitleParticipants { get; set; }
     }
 }

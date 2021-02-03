@@ -17,10 +17,6 @@ namespace Marketplace.API.Models
         public int GenreId { get; set; }
 
         [ForeignKey(nameof(GenreId))]
-        [InverseProperty("TitleGenres")]
         public virtual Genre Genre { get; set; }
-        [ForeignKey(nameof(TitleId))]
-        [InverseProperty("TitleGenres")]
-        public virtual Title Title { get; set; }
     }
 }

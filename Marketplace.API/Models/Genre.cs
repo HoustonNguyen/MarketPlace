@@ -13,15 +13,11 @@ namespace Marketplace.API.Models
     {
         public Genre()
         {
-            TitleGenres = new HashSet<TitleGenre>();
         }
 
         [Key]
         public int Id { get; set; }
         [StringLength(100)]
         public string Name { get; set; }
-
-        [InverseProperty(nameof(TitleGenre.Genre))]
-        public virtual ICollection<TitleGenre> TitleGenres { get; set; }
     }
 }

@@ -21,10 +21,6 @@ namespace Marketplace.API.Models
         public bool IsOnScreen { get; set; }
 
         [ForeignKey(nameof(ParticipantId))]
-        [InverseProperty("TitleParticipants")]
         public virtual Participant Participant { get; set; }
-        [ForeignKey(nameof(TitleId))]
-        [InverseProperty("TitleParticipants")]
-        public virtual Title Title { get; set; }
     }
 }

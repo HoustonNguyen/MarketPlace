@@ -22,9 +22,5 @@ namespace Marketplace.API.Models
         public string TitleName { get; set; }
         [Key]
         public int Id { get; set; }
-
-        [ForeignKey(nameof(TitleId))]
-        [InverseProperty("OtherNames")]
-        public virtual Title Title { get; set; }
     }
 }

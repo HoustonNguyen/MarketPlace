@@ -21,9 +21,5 @@ namespace Marketplace.API.Models
         public string AwardCompany { get; set; }
         [Key]
         public int Id { get; set; }
-
-        [ForeignKey(nameof(TitleId))]
-        [InverseProperty("Awards")]
-        public virtual Title Title { get; set; }
     }
 }
