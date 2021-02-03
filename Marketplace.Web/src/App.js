@@ -1,80 +1,59 @@
 import './App.css';
-import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, IconButton, Typography, Toolbar, Menu, MenuItem } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link as RouterLink
-} from "react-router-dom";
+import React from "react";
+import { Box, AppBar, Tabs, Tab } from '@material-ui/core';
 import TitleSearch from './Pages/TitleView';
 import About from './Pages/About';
-import { useState } from 'react';
-import { AccountCircle } from '@material-ui/icons';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-}));
+//https://material-ui.com/components/tabs/
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          {children}
+        </Box>
+      )}
+    </div>
+  );
+}
+
+function tabProperties(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
 
 function App() {
-  const [profileMenu, setProfileMenu] = useState();
+  const [value, setValue] = React.useState(0);
 
-  const classes = useStyles();
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
-    <Router>
       <div className="App">
         <AppBar position="static">
-          <Toolbar>
-            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="profile-menu"
-              open={Boolean(profileMenu)}
-              anchorEl={profileMenu}
-              onClose={() => setProfileMenu(null)}
-              disableAutoFocusItem
-            >
-              <MenuItem
-                component={RouterLink}
-                onClick={() => setProfileMenu(null)}
-                to="/About"
-              >
-                <AccountCircle /> Change Password
-              </MenuItem>
-              <MenuItem
-                component={RouterLink}
-                onClick={() => setProfileMenu(null)}
-                to="/Home"
-              >
-                <AccountCircle /> Edit Profile
-              </MenuItem>
-            </Menu>
-            <Typography variant="h6" className={classes.title}>
-              Main
-            </Typography>
-            {/* <Button color="inherit">Login</Button> */}
-          </Toolbar>
+          <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+            <Tab label="Titles" {...tabProperties(0)} />
+            <Tab label="About" {...tabProperties(1)} />
+          </Tabs>
         </AppBar>
-        <Switch>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/">
-            <TitleSearch />
-          </Route>
-        </Switch>
+        <TabPanel value={value} index={0}>
+          <TitleSearch />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <About />
+        </TabPanel>
       </div>
-    </Router>
   );
 }
 
