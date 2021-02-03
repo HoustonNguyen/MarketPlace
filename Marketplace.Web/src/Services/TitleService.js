@@ -9,9 +9,13 @@ const get = id => {
 };
 
 const findByTitle = (searchTerm, options) => {
-  let caseSensitivityParam = (options.enableCaseSensitivity ? `&caseSensitive=${options.enableCaseSensitivity}` : "");
-  let containsParam = (options.enableContains ? `&contains=${options.enableContains}` : "");
-  return http.get(`/Title/Search?searchTerm=${searchTerm}${caseSensitivityParam}${containsParam}`);
+  return http.get(`/Title/Search`, {
+    params: {
+      "SearchTerm": searchTerm,
+      "CaseSensitive": options.enableCaseSensitivity,
+      "Contains": options.enableContains
+    }
+  });
 };
 
 const exportedFunctions = {

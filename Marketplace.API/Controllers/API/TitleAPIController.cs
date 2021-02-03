@@ -1,9 +1,7 @@
-﻿using Marketplace.API.Models;
+﻿using Marketplace.API.Models.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Marketplace.API.Controllers.API
 {
@@ -13,6 +11,8 @@ namespace Marketplace.API.Controllers.API
 
         public Title GetTitle(int id)
         {
+            //The entity is not hydrated with relational entities by default, so we explicitly tell it to include these items
+            //We don't want to include the entire model with related entities when retreiving ALL titles, but it makes sense for a single title
             var result = _Context.Titles.AsNoTracking()
                 .Include(t => t.Awards)
                 .Include(t => t.OtherNames)

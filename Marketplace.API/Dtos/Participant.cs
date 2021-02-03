@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Marketplace.API.Dtos
+﻿namespace Marketplace.API.Dtos
 {
     public class Participant
     {

@@ -6,17 +6,18 @@ using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace Marketplace.API.Models
+namespace Marketplace.API.Models.Entities
 {
-    [Table("TitleGenre")]
-    public partial class TitleGenre
+    [Table("Genre")]
+    public partial class Genre
     {
+        public Genre()
+        {
+        }
+
         [Key]
         public int Id { get; set; }
-        public int TitleId { get; set; }
-        public int GenreId { get; set; }
-
-        [ForeignKey(nameof(GenreId))]
-        public virtual Genre Genre { get; set; }
+        [StringLength(100)]
+        public string Name { get; set; }
     }
 }

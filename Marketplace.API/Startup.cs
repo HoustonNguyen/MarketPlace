@@ -1,5 +1,5 @@
 using Marketplace.API.Controllers.API;
-using Marketplace.API.Models;
+using Marketplace.API.Models.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

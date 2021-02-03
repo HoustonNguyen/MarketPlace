@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace Marketplace.API.Models
+namespace Marketplace.API.Models.Entities
 {
     [Table("Participant")]
     public partial class Participant

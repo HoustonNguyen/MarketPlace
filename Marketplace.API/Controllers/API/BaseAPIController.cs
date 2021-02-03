@@ -1,8 +1,4 @@
-﻿using Marketplace.API.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Marketplace.API.Models.Entities;
 
 namespace Marketplace.API.Controllers.API
 {

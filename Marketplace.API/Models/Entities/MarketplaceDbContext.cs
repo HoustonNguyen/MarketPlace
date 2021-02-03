@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace Marketplace.API.Models
+namespace Marketplace.API.Models.Entities
 {
     public partial class MarketplaceDbContext : DbContext
     {

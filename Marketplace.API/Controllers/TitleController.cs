@@ -1,7 +1,5 @@
 ﻿using Marketplace.API.Controllers.API;
-using Marketplace.API.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +11,10 @@ namespace Marketplace.API.Controllers
     [Route("[controller]")]
     public class TitleController : ControllerBase
     {
-        private readonly ILogger<TitleController> _logger;
         private readonly ITitleAPIController _TitleAPIController;
 
-        public TitleController(ILogger<TitleController> logger, ITitleAPIController titleAPIController)
+        public TitleController(ITitleAPIController titleAPIController)
         {
-            _logger = logger;
             _TitleAPIController = titleAPIController;
         }
 
@@ -26,7 +22,7 @@ namespace Marketplace.API.Controllers
         [Route(nameof(GetTitles))]
         public ActionResult GetTitles()
         {
-            IEnumerable<Models.Title> data = null;
+            IEnumerable<Models.Entities.Title> data = null;
             try
             {
                 data = _TitleAPIController.GetTitles();
@@ -48,7 +44,7 @@ namespace Marketplace.API.Controllers
         [Route(nameof(GetTitle))]
         public ActionResult GetTitle(int id)
         {
-            Models.Title data = null;
+            Models.Entities.Title data = null;
             try
             {
                 data = _TitleAPIController.GetTitle(id);
@@ -62,52 +58,10 @@ namespace Marketplace.API.Controllers
                 });
             }
 
-            Dtos.Title result = null;
             try
             {
-                result = new Dtos.Title()
-                {
-                    TitleId = data.TitleId,
-                    TitleName = data.TitleName,
-                    TitleTypeId = data.TitleTypeId,
-                    ReleaseYear = data.ReleaseYear,
-                    ProcessedDateTimeUtc = data.ProcessedDateTimeUtc,
-                    Awards = data.Awards.Select(a => new Dtos.Award()
-                    {
-                        Id = a.Id,
-                        AwardName = a.Award1,
-                        AwardCompany = a.AwardCompany,
-                        AwardWon = (a.AwardWon ?? false) ? "Won" : "Nominated",
-                        AwardYear = a.AwardYear
-                    }).ToList(),
-                    Credits = data.TitleParticipants.Select(tp => new Dtos.Credit()
-                    {
-                        Id = tp.Id,
-                        Name = tp.Participant?.Name ?? "Missing Name",
-                        IsKey = tp.IsKey.ToYesOrNo(),
-                        IsOnScreen = tp.IsOnScreen.ToYesOrNo(),
-                        RoleType = tp.RoleType
-                    }).ToList(),
-                    Genres = data.TitleGenres.Select(tg => new Dtos.Genre()
-                    {
-                        Id = tg.Id,
-                        Name = tg.Genre?.Name ?? "Missing Genre"
-                    }).ToList(),
-                    OtherNames = data.OtherNames.Select(o => new Dtos.OtherName()
-                    {
-                        Id = o.Id,
-                        TitleName = $"{o.TitleName} ({o.TitleNameLanguage ?? "Unknown"})",
-                        TitleNameLanguage = o.TitleNameLanguage,
-                        TitleNameType = o.TitleNameType
-                    }).ToList(),
-                    StoryLines = data.StoryLines.Select(s => new Dtos.StoryLine()
-                    {
-                        Id = s.Id,
-                        Description = s.Description,
-                        Language = s.Language,
-                        Type = s.Type
-                    }).ToList()
-                };
+                Dtos.Title result = data;
+                return new JsonResult(result);
             }
             catch (Exception ex)
             {
@@ -118,27 +72,25 @@ namespace Marketplace.API.Controllers
                     Details = ex
                 });
             }
-
-            return new JsonResult(result);
         }
 
         [HttpGet]
         [Route(nameof(Search))]
-        public ActionResult Search(string searchTerm, bool caseSensitive = false, bool contains = false)
+        public ActionResult Search([FromQuery] Models.Request.TitleSearch request)
         {
             var result = _TitleAPIController.GetTitles();
             //TODO Should this logic be on the business side or not?
-            if (string.IsNullOrWhiteSpace(searchTerm) == false)
+            if (string.IsNullOrWhiteSpace(request.SearchTerm) == false)
             {
                 //TODO I want a better and more maintainable way of adding parameters later on
-                StringComparison comparator = caseSensitive ? StringComparison.CurrentCulture : StringComparison.InvariantCultureIgnoreCase;
-                if (contains)
+                StringComparison comparator = request.CaseSensitive ? StringComparison.CurrentCulture : StringComparison.InvariantCultureIgnoreCase;
+                if (request.Contains)
                 {
-                    result = result.Where(r => r.TitleName.Contains(searchTerm, comparator));
+                    result = result.Where(r => r.TitleName.Contains(request.SearchTerm, comparator));
                 }
                 else
                 {
-                    result = result.Where(r => r.TitleName.StartsWith(searchTerm, comparator));
+                    result = result.Where(r => r.TitleName.StartsWith(request.SearchTerm, comparator));
                 }
             }
             return new JsonResult(result);

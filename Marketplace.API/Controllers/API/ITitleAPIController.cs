@@ -1,4 +1,4 @@
-﻿using Marketplace.API.Models;
+﻿using Marketplace.API.Models.Entities;
 using System.Collections.Generic;
 
 namespace Marketplace.API.Controllers.API
