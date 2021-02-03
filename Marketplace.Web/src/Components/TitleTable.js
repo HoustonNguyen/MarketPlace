@@ -9,6 +9,7 @@ import {
   Paper,
   TablePagination
 } from "@material-ui/core";
+import { useSelector,useDispatch } from 'react-redux';
 
 const columns = [
   { field: "titleId", headerName: "ID" },
@@ -16,9 +17,15 @@ const columns = [
   { field: "releaseYear", headerName: "Year" },
 ];
 
-export default function TitleTable({ titles, titleId, selectionCallback }) {
+export default function TitleTable({ titles }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  //Local state for the input
+  const [selectedTitleIdLocal, setSelectedTitleIdLocal] = useState(useSelector(state => state.selectedTitleId));
+
+  //Use for all the dispatch actions
+  const dispatch = useDispatch()
 
   //https://material-ui.com/components/tables/
   const handleChangePage = (event, newPage) => {
@@ -28,10 +35,13 @@ export default function TitleTable({ titles, titleId, selectionCallback }) {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+    setSelectedTitleIdLocal(null);
+    dispatch({type:'UNSET_SELECTED_TITLE_ID'});
   };
 
   const rowSelectionChanged = (row) => {
-        selectionCallback(row.titleId);
+    setSelectedTitleIdLocal(row.titleId);
+    dispatch({type:'SET_SELECTED_TITLE_ID', payload: row.titleId});
   }
 
   return (
@@ -51,7 +61,7 @@ export default function TitleTable({ titles, titleId, selectionCallback }) {
             {titles
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
-                <TableRow key={row.titleId} onClick={() => { rowSelectionChanged(row); }} selected={ row.titleId === titleId }>
+                <TableRow key={row.titleId} onClick={() => { rowSelectionChanged(row); }} selected={ row.titleId === selectedTitleIdLocal }>
                   {columns.map((c) => (
                     <TableCell key={c.field} scope="row">
                       <div>{row[c.field]}</div>
