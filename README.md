@@ -55,3 +55,5 @@ I really want to do the following:
  3. Design a better layout for the Web Client - I actually underestimated the amount of metadata tied to a Title. It was my desire to keep things simple and shove everything onto one page, but things are getting a little cramped.
  4. Add a layer for Adding and Deleting Titles, as well as modifying data.
  5. Add unit testing
+ 6. More search options on the UI
+ 7. Better handling of scrolling when there is too much info

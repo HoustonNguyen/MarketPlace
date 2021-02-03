@@ -39,9 +39,9 @@ export default function TitleView() {
   const [enableCaseSensitivity, setEnableCaseSensitivity] = useState(false);
   const [enableContains, setEnableContains] = useState(false);
   const [showLoadingBar, setShowLoadingBar] = useState(true);
-  const [openErrorModal, setOpenErrorModal] = React.useState(false);
   const dispatch = useDispatch();
   const selectedTitleId = useSelector(state => state.selectedTitleId);
+  const showErrorModal = useSelector(state => state.showErrorModal);
 
   //#region Event Handlers
   const searchTermChanged = (event) => {
@@ -57,16 +57,17 @@ export default function TitleView() {
   };
 
   const handleErrorModalClose = () => {
-    setOpenErrorModal(false);
+    dispatch({type: "SET_SHOW_ERROR_MODAL", payload: false});
   };
   //#endregion
 
-  const errorOccured = e => {
-    console.error(e);
-    setOpenErrorModal(true);
-  }
-
   useEffect(() => {
+    const errorOccured = e => {
+      console.error(e);
+      dispatch({type: "SET_SHOW_ERROR_MODAL", payload: true});
+  
+    }
+
     const getAllTitles = () => {
       TitleService.getAll()
         .then((response) => {
@@ -108,7 +109,7 @@ export default function TitleView() {
     <Paper className="title-view-container" elevation={3}>
       <Modal
         className={classes.modal}
-        open={openErrorModal}
+        open={showErrorModal}
         onClose={handleErrorModalClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -116,7 +117,7 @@ export default function TitleView() {
           timeout: 500,
         }}
       >
-        <Fade in={openErrorModal}>
+        <Fade in={showErrorModal}>
             <Alert severity="error">
                 <AlertTitle>Error</AlertTitle>
                 There was a problem retrieving data from the server

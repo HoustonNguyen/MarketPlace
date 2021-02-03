@@ -13,7 +13,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import DetailsTable from "./DetailsTable";
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 const useStyles = makeStyles({
   bold: {
@@ -46,13 +46,18 @@ export default function TitleDetails() {
   const [title, setTitle] = useState({});
   const [showLoadingBar, setShowLoadingBar] = useState(true);
   const selectedTitleIdLocal = useSelector(state => state.selectedTitleId)
-
+  const dispatch = useDispatch();
+  
   useEffect(() => {
     setShowLoadingBar(true);
     if (selectedTitleIdLocal) {
       TitleService.get(selectedTitleIdLocal).then((response) => {
         setTitle(response.data);
         setShowLoadingBar(false);
+      })
+      .catch((e) => {
+        console.error(e);
+        dispatch({type: "SET_SHOW_ERROR_MODAL", payload: true});
       });
     }
   }, [selectedTitleIdLocal]);

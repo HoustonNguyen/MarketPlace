@@ -44,7 +44,7 @@ namespace Marketplace.API.Controllers
             {
                 data = _TitleAPIController.GetTitle(id);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return GenerateInternalErrorResponse("There was a problem retreiving the record data", ex);
             }
