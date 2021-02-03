@@ -9,11 +9,11 @@ namespace Marketplace.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TitleController : ControllerBase
+    public class TitleController : BaseController
     {
         private readonly ITitleAPIController _TitleAPIController;
 
-        public TitleController(ITitleAPIController titleAPIController)
+        public TitleController(ITitleAPIController titleAPIController) : base()
         {
             _TitleAPIController = titleAPIController;
         }
@@ -29,12 +29,7 @@ namespace Marketplace.API.Controllers
             }
             catch (Exception ex)
             {
-                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                return new JsonResult(new
-                {
-                    Message = "There was a problem retreiving the record data",
-                    Details = ex
-                });
+                return GenerateInternalErrorResponse("There was a problem retreiving the record data", ex);
             }
             
             return new JsonResult(data);
@@ -51,11 +46,7 @@ namespace Marketplace.API.Controllers
             }
             catch(Exception ex)
             {
-                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                return new JsonResult(new { 
-                    Message = "There was a problem retreiving the record data",
-                    Details = ex
-                });
+                return GenerateInternalErrorResponse("There was a problem retreiving the record data", ex);
             }
 
             try
@@ -65,12 +56,7 @@ namespace Marketplace.API.Controllers
             }
             catch (Exception ex)
             {
-                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                return new JsonResult(new
-                {
-                    Message = "There was a problem parsing the data from the server",
-                    Details = ex
-                });
+                return GenerateInternalErrorResponse("There was a problem retreiving the record data", ex);
             }
         }
 
