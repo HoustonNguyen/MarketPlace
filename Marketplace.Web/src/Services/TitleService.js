@@ -1,19 +1,23 @@
 import http from "../http-common";
 
 const getAll = () => {
-  return http.get("/Title");
+  return http.get("/Title/GetTitles");
 };
 
 const get = id => {
-  return http.get(`/Title/${id}`);
+  return http.get(`/Title/GetTitle?id=${id}`);
 };
 
-const findByTitle = title => {
-  return http.get(`/Title/Search?title=${title}`);
+const findByTitle = (searchTerm, options) => {
+  let caseSensitivityParam = (options.enableCaseSensitivity ? `&caseSensitive=${options.enableCaseSensitivity}` : "");
+  let containsParam = (options.enableContains ? `&contains=${options.enableContains}` : "");
+  return http.get(`/Title/Search?searchTerm=${searchTerm}${caseSensitivityParam}${containsParam}`);
 };
 
-export default {
+const exportedFunctions = {
   getAll,
   get,
   findByTitle
-};
+}
+
+export default exportedFunctions;
