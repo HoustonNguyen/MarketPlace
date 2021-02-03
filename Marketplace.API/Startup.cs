@@ -26,7 +26,9 @@ namespace Marketplace.API
             {
                 options.AddDefaultPolicy(builder =>
                     {
-                        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                        builder.WithOrigins("http://localhost:8081")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
                     });
             });
 
