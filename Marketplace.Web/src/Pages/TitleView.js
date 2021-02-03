@@ -16,6 +16,7 @@ import TitleDetails from "../Components/TitleDetails";
 import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from "@material-ui/core/styles";
 import { AlertTitle } from "@material-ui/lab";
+import { useSelector, useDispatch } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -35,11 +36,12 @@ export default function TitleView() {
   const classes = useStyles();
   const [titles, setTitles] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedTitleId, setSelectedTitleId] = useState(null);
   const [enableCaseSensitivity, setEnableCaseSensitivity] = useState(false);
   const [enableContains, setEnableContains] = useState(false);
   const [showLoadingBar, setShowLoadingBar] = useState(true);
   const [openErrorModal, setOpenErrorModal] = React.useState(false);
+  const dispatch = useDispatch();
+  const selectedTitleId = useSelector(state => state.selectedTitleId);
 
   //#region Event Handlers
   const searchTermChanged = (event) => {
@@ -52,10 +54,6 @@ export default function TitleView() {
 
   const enableContainsChanged = (event) => {
     setEnableContains(event.target.checked);
-  };
-
-  const titleSelectionCallback = (titleId) => {
-    setSelectedTitleId(titleId);
   };
 
   const handleErrorModalClose = () => {
@@ -104,7 +102,7 @@ export default function TitleView() {
     };
 
     retrieveTitles();
-  }, [searchTerm, enableCaseSensitivity, enableContains, selectedTitleId]);
+  }, [searchTerm, enableCaseSensitivity, enableContains, dispatch]);
 
   return (
     <Paper className="title-view-container" elevation={3}>
@@ -141,8 +139,6 @@ export default function TitleView() {
           {showLoadingBar ? <LinearProgress /> : null}
           <TitleTable
             titles={titles}
-            titleId={selectedTitleId}
-            selectionCallback={titleSelectionCallback}
           ></TitleTable>
         </Grid>
         <Grid item xs={9}>
@@ -151,7 +147,7 @@ export default function TitleView() {
               <Typography>Please make a selection to view details</Typography>
             </Paper>
           ) : (
-            <TitleDetails titleId={selectedTitleId}></TitleDetails>
+            <TitleDetails></TitleDetails>
           )}
         </Grid>
       </Grid>

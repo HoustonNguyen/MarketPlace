@@ -13,6 +13,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import DetailsTable from "./DetailsTable";
+import { useSelector,useDispatch } from 'react-redux';
 
 const useStyles = makeStyles({
   bold: {
@@ -40,21 +41,21 @@ const participantColumns = [
   { field: "isKey", headerName: "Is Key" },
 ];
 
-export default function TitleDetails(props) {
+export default function TitleDetails() {
   const classes = useStyles();
-  const { titleId } = props;
   const [title, setTitle] = useState({});
   const [showLoadingBar, setShowLoadingBar] = useState(true);
+  const selectedTitleIdLocal = useSelector(state => state.selectedTitleId)
 
   useEffect(() => {
     setShowLoadingBar(true);
-    if (titleId) {
-      TitleService.get(titleId).then((response) => {
+    if (selectedTitleIdLocal) {
+      TitleService.get(selectedTitleIdLocal).then((response) => {
         setTitle(response.data);
         setShowLoadingBar(false);
       });
     }
-  }, [titleId]);
+  }, [selectedTitleIdLocal]);
 
   const parseGenres = (title) => {
     if (!title.genres) {
