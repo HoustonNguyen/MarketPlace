@@ -18,11 +18,12 @@ You will want to open the Web API project and replace any instance of
 >     Server=DESKTOP-HUE2\\SQLEXPRESS; Database=Titles; Trusted_Connection=True; MultipleActiveResultSets=true
 
  with a connection string that is more appropriate for your machine, however you have your instance configured.
- You will find this in the appsettings.json and the appsettings.Development.json file in the root of the API Project.
+ **You will find this in the appsettings.json and the appsettings.Development.json file in the root of the API Project.**
 
 To run the Web API, assuming that you are using Visual Studio 2019, please open the solution file "Marketplace.sln" and be sure that Marketplace.API is set as the start-up project. And then run the application using IIS Express (Debug with Any CPU selected should be fine).
 **Please note that the Web API runs out of port 44356 on localhost.** 
-![](IISExpressButton.png)
+
+![](IISExpress Button.png)
 
 To run the Web Client, please open command-line and navigate to the folder "Marketplace.Web". From there, run the command 
 > npm install
