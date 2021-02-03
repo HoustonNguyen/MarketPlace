@@ -6,6 +6,7 @@ namespace Marketplace.API.Controllers.API
     public interface ITitleAPIController : IBaseAPIController
     {
         IEnumerable<Title> GetTitles();
+        Title GetTitle(int id);
     }
 }
  
